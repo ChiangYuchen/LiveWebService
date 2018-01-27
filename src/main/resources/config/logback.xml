@@ -1,12 +1,69 @@
-<configuration scan="true" scanPeriod="60 seconds">
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- debug="true":打印logback内部状态（默认当logback运行出错时才会打印内部状态） -->
+<!-- scan="true":自动扫描该配置文件，若有修改则重新加载该配置文件 -->
+<!-- scanPeriod="30 seconds":配置自动扫描时间间隔，默认为1分钟 -->
+<configuration debug="false" scan="true" scanPeriod="90 seconds">
 
+    <!-- 日志应用名称 -->
+    <property name="APP_NAME" value="LiveWebServiceLog" />
+    <!-- 日志文件的保存路径 -->
+    <property name="LOG_HOME" value="C:/Users/Yuche/Documents/${APP_NAME}}" />
+    <!-- 日志输出格式 -->
+    <property name="ENCODER_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{80} - %msg%n" />
+    <!-- 设置上下文名称 -->
+    <contextName>${APP_NAME}</contextName>
+    <!-- 时间戳 -->
+    <timestamp key="bySecond" datePattern="yyyy-MM-dd" />
+
+    <!-- 控制台日志 -->
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
-        <encoder>
-            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>${ENCODER_PATTERN}</pattern>
         </encoder>
     </appender>
 
+    <!-- 文件日志 -->
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!-- 字符编码 -->
+        <Encoding>UTF-8</Encoding>
+        <!-- file指定当前生成的日志文件名称 -->
+        <file>${LOG_HOME}/${bySecond}.log</file>
+        <!--  文件滚动策略根据%d{}中的内容而定，此处为每天产生一个文件-->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_HOME}/output.%d{yyyy-MM-dd}.log.zip</fileNamePattern>
+            <!-- 日志文件保存时间 -->
+            <maxHistory>7</maxHistory>
+        </rollingPolicy>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>${ENCODER_PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <!-- 错误日志 -->
+    <appender name="ERROR_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_HOME}/error.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>7</maxHistory>
+        </rollingPolicy>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>${ENCODER_PATTERN}</pattern>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>WARN</level>
+        </filter>
+    </appender>
+
+    <!-- 用来设定某一个包或者具体的某一个类的日志打印级别以及指定<appender-ref> -->
+    <!-- addtivity是否向上级传递打印信息，默认时true -->
+    <logger name="com.silver.lwb" level="DEBUG" addtivity="false">
+        <appender-ref ref="STDOUT" />
+        <appender-ref ref="FILE" />
+    </logger>
+
+    <!-- 根<logger>元素 -->
     <root level="DEBUG">
         <appender-ref ref="STDOUT" />
+        <appender-ref ref="FILE" />
+        <appender-ref ref="ERROR_FILE" />
     </root>
 </configuration>

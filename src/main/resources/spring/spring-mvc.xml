@@ -30,9 +30,11 @@
         </mvc:message-converters>
     </mvc:annotation-driven>
     <!-- 静态资源映射 -->
+    <!--
     <mvc:resources mapping="/static/source/css/**" location="/static/source/css/" cache-period="31531600"/>
     <mvc:resources mapping="/static/source/js/**" location="/static/source/js/" cache-period="31531600"/>
     <mvc:resources mapping="/static/source/img/**" location="/static/source/img/" cache-period="31531600"/>
+    -->
     <!-- 视图解析器 -->
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="prefix" value="/WEB-INF/view/"/>

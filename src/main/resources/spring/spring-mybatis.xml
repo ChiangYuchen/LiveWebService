@@ -13,7 +13,7 @@
 
     <!-- 自动扫描组件 -->
     <context:component-scan base-package="com.silver.lwb.*">
-        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Repository"/>
     </context:component-scan>
     <!-- jdbc配置文件 -->
     <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
@@ -38,13 +38,14 @@
     </bean>
     <!-- 扫描mapper接口(DAO) -->
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-        <property name="basePackage" value="com.silver.campuslive.dao"/>
+        <property name="basePackage" value="com.silver.lwb.dao"/>
         <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
     </bean>
-    <!-- 事物管理 -->
+    <!-- 事务管理，此项配置适用于JDBC或者MyBatis -->
     <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
         <property name="dataSource" ref="dataSource"/>
     </bean>
-    <!-- 启动@Transaction注解 -->
-    <tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true"/>
+    <!-- 事务注解驱动，标注@Transactional的类和方法将具有事务性 -->
+    <!-- proxy-target-class属性值用来控制是基于接口的还是基于类的代理被创建 -->
+    <tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="false"/>
 </beans>
