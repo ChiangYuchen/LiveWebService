@@ -7,17 +7,51 @@
         <result column="usex" property="uSex" jdbcType="VARCHAR"/>
         <result column="uage" property="uAge" jdbcType="DATE"/>
         <result column="usign_up_time" property="uSignUpTime" jdbcType="TIMESTAMP"/>
+        <result column="uavatar" property="uAvatar" jdbcType="VARCHAR"/>
     </resultMap>
 
     <insert id="insert" parameterType="com.silver.lwb.pojo.UserProfile">
         INSERT INTO user_profile
-        (uname, usex, uage, usign_up_time)
+        (uname, usex, uage, usign_up_time, uavatar)
         VALUES
         (
         #{uName},
         #{uSex},
         #{uAge},
         #{uSignUpTime}
+        #{uAvatar}
         )
     </insert>
+
+    <update id="update" parameterType="com.silver.lwb.pojo.UserProfile">
+        UPDATE user_profile
+        <trim prefix="set" suffixOverrides=",">
+            <if test="uName != null and uName != ''">
+                uname = #{uName},
+            </if>
+            <if test="uSex != null and uSex != ''">
+                usex = #{uSex},
+            </if>
+            <if test="uAge != null and uAge != ''">
+                uage = #{uAge},
+            </if>
+            <if test="uSignUpTime != null and uSignUpTime != ''">
+                usign_up_time = #{uSignUpTime},
+            </if>
+            <if test="uAvatar != null and uAvatar != ''">
+                uavatar = #{uAvatar}
+            </if>
+        </trim>
+        WHERE uid = #{uID};
+    </update>
+
+    <select id="inquireUserAvatar" parameterType="INTEGER" resultType="STRING">
+        SELECT uavatar FROM user_profile
+        WHERE uid = #{uid}
+    </select>
+
+    <select id="inquireUserProfile" parameterType="INTEGER" resultMap="BaseUserProfileResult">
+        SELECT * FROM user_profile
+        WHERE uid = #{uid}
+    </select>
 </mapper>

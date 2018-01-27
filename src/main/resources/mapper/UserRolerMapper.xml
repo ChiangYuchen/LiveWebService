@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.silver.lwb.dao.UserRolerDao">
+    <insert id="insert" parameterType="INTEGER">
+        INSERT INTO user_roler
+        (uid, rid)
+        VALUES
+        (
+        #{uid},
+        #{rid}
+        )
+    </insert>
+
+    <select id="inquireRolerIDList" parameterType="INTEGER" resultType="INTEGER">
+        SELECT rid FROM user_roler
+        WHERE uid = #{uid}
+    </select>
+
+    <select id="inquireRolerNameList" parameterType="INTEGER" resultType="STRING">
+        SELECT rp.rname FROM user_roler ur , roler_profile rp
+        WHERE ur.uid = #{uid}
+    </select>
+</mapper>

@@ -12,6 +12,7 @@ public class UserProfile {
     private String uSex;
     private Date uAge;
     private Date uSignUpTime;
+    private String uAvatar;
 
     public void setuID(int uID) {
         this.uID = uID;
@@ -33,6 +34,10 @@ public class UserProfile {
         this.uSignUpTime = uSignUpTime;
     }
 
+    public void setuAvatar(String uAvatar) {
+        this.uAvatar = uAvatar;
+    }
+
     public int getuID() {
         return uID;
     }
@@ -51,5 +56,9 @@ public class UserProfile {
 
     public Date getuSignUpTime() {
         return uSignUpTime;
+    }
+
+    public String getuAvatar() {
+        return uAvatar;
     }
 }

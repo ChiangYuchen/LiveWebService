@@ -8,6 +8,7 @@
         <result column="cimage" property="cImage" jdbcType="VARCHAR"/>
         <result column="cpush_rtmp" property="cPushRTMP" jdbcType="VARCHAR"/>
         <result column="cpull_rtmp" property="cPullRTMP" jdbcType="VARCHAR"/>
+        <result column="cpermission" property="cPermission" jdbcType="VARCHAR"/>
     </resultMap>
 
     <insert id="insert" parameterType="com.silver.lwb.pojo.ChannelProfile">
@@ -25,12 +26,37 @@
         )
     </insert>
 
+    <update id="update" parameterType="com.silver.lwb.pojo.ChannelProfile">
+        UPDATE channel_profile
+        <trim prefix="set" suffixOverrides=",">
+            <if test="cName != null and cName != ''">
+                cname = #{cName},
+            </if>
+            <if test="cCategory != null and cCategory != ''">
+                ccategory = #{cCategory},
+            </if>
+            <if test="cImage != null and cImage != ''">
+                cimage = #{cImage},
+            </if>
+            <if test="cPermission != null and cPermission != ''">
+                cpermission = #{cPermission}
+            </if>
+        </trim>
+        WHERE cid = #{cID};
+    </update>
+
+    <delete id="delete" parameterType="INTEGER">
+        DELETE FROM channel_profile
+        <where>
+            cid = #{cID}
+        </where>
+    </delete>
+
     <select id="isChannelExists" resultType="INTEGER">
         SELECT cid FROM channel_profile
         WHERE
         cname = #{n, jdbcType=VARCHAR}
-        AND
-        csecret_key = #{k, jdbcType=VARCHAR}
+        AND csecret_key = #{k, jdbcType=VARCHAR}
     </select>
 
     <select id="isChannelPermitted" resultType="BOOLEAN">
@@ -38,8 +64,38 @@
         WHERE cid = #{id, jdbcType=VARCHAR}
     </select>
 
+    <select id="inquireChannelByCID" resultMap="PublicChannelProfileResult">
+        SELECT * FROM channel_profile
+        WHERE
+        cid = #{cID}
+    </select>
+
+    <select id="inquireActiveChannelList" resultMap="PublicChannelProfileResult">
+        SELECT cp.cid, cp.cname, cp.ccategory, cp.cimage, cp.cpull_rtmp, cp.cpush_rtmp, cp.cpermission
+        FROM channel_profile cp, channel_status cs
+        WHERE
+        cs.cstatus = 1
+        LIMIT #{o, jdbcType=INTEGER}, #{n, jdbcType=INTEGER}
+    </select>
+
     <select id="inquireAllChannelList" resultMap="PublicChannelProfileResult">
         SELECT * FROM channel_profile
+        LIMIT #{o, jdbcType=INTEGER}, #{n, jdbcType=INTEGER}
+    </select>
+
+    <select id="inquireActiveChannelListByCategory" resultMap="PublicChannelProfileResult">
+        SELECT cp.cid, cp.cname, cp.ccategory, cp.cimage, cp.cpull_rtmp, cp.cpush_rtmp, cp.cpermission
+        FROM channel_profile cp, channel_status cs
+        WHERE
+        cs.cstatus = 1
+        AND
+        cp.ccategory = #{category}
+        LIMIT #{o, jdbcType=INTEGER}, #{n, jdbcType=INTEGER}
+    </select>
+
+    <select id="inquireAllChannelListByCategory" resultMap="PublicChannelProfileResult">
+        SELECT * FROM channel_profile
+        WHERE ccategory = #{category}
         LIMIT #{o, jdbcType=INTEGER}, #{n, jdbcType=INTEGER}
     </select>
 </mapper>

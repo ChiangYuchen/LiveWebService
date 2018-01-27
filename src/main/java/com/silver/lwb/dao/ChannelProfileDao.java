@@ -12,7 +12,7 @@ import java.util.List;
  *
  * @author Yuchen Chiang
  */
-@Repository(value = "channeProfilelDao")
+@Repository(value = "channelProfilelDao")
 public interface ChannelProfileDao {
 
     /**
@@ -21,6 +21,20 @@ public interface ChannelProfileDao {
      * @return true if success
      */
     boolean insert(ChannelProfile channelProfile);
+
+    /**
+     *
+     * @param channelProfile pojo
+     * @return true if success
+     */
+    boolean update(ChannelProfile channelProfile);
+
+    /**
+     *
+     * @param cid channel id
+     * @return true if success
+     */
+    boolean delete(int cid);
 
     /**
      *
@@ -39,9 +53,42 @@ public interface ChannelProfileDao {
 
     /**
      *
+     * @param cid channel id
+     * @return channel info
+     */
+    ChannelProfile inquireChannelByCID(@Param("id") int cid);
+
+    /**
+     *
      * @param o offset
      * @param n num
-     * @return List<ChannelProfile> if databases is not empty
+     * @return Active channel list
+     */
+    List<ChannelProfile> inquireActiveChannelList(@Param("o") int o, @Param("n") int n);
+
+    /**
+     *
+     * @param o offset
+     * @param n num
+     * @return All channel list
      */
     List<ChannelProfile> inquireAllChannelList(@Param("o") int o, @Param("n") int n);
+
+    /**
+     *
+     * @param o offset
+     * @param n num
+     * @param category category
+     * @return Active channel list by category
+     */
+    List<ChannelProfile> inquireActiveChannelListByCategory(@Param("o") int o, @Param("n") int n, @Param("category") String category);
+
+    /**
+     *
+     * @param o offset
+     * @param n num
+     * @param category category
+     * @return All channel list by category
+     */
+    List<ChannelProfile> inquireAllChannelListByCtegory(@Param("o") int o, @Param("n") int n, @Param("category") String category);
 }

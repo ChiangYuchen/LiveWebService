@@ -1,5 +1,7 @@
 package com.silver.lwb.service;
 
+import com.alibaba.fastjson.JSONObject;
+
 /**
  * Service Interface of the Channel Service.
  *
@@ -16,4 +18,8 @@ public interface ChannelService {
     void increaseChannelPlayCount(String cName);
 
     void descreaseChannelPlayCount(String cName);
+
+    JSONObject inquireAllChannelList(int records, int pnums, String category);
+
+    JSONObject inquireActiveChannelList(int records, int pnums, String category);
 }

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.silver.lwb.dao.UserChannelDao">
+    <insert id="insert" parameterType="INTEGER">
+        INSERT INTO user_channel
+        (uid, cid)
+        VALUES
+        (
+        #{uid},
+        #{cid}
+        )
+    </insert>
+
+    <delete id="delete" parameterType="INTEGER">
+        DELETE FROM user_channel
+        WHERE uid = #{uid}
+    </delete>
+
+    <select id="isUserExist" parameterType="INTEGER" resultType="BOOLEAN">
+        SELECT COUNT(uid)
+        FROM user_channel
+        WHERE
+        uid = {uid}
+    </select>
+
+    <select id="inquireUID" parameterType="INTEGER" resultType="INTEGER">
+        SELECT uid
+        FROM user_channel
+        WHERE
+        cid = {cid}
+    </select>
+
+    <select id="inquireCID" parameterType="INTEGER" resultType="INTEGER">
+        SELECT cid
+        FROM user_channel
+        WHERE
+        uid = {uid}
+     </select>
+
+    <select id="inquireAllUID" resultType="INTEGER">
+        SELECT uid
+        FROM user_channel
+    </select>
+</mapper>

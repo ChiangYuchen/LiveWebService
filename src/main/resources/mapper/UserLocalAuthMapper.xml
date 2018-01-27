@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.silver.lwb.dao.UserLocalAuthDao">
+    <insert id="insert">
+        INSERT INTO user_local_auth
+        (uid, uname, upassword)
+        VALUES
+        (
+        #{uid},
+        #{uname},
+        #{upassword}
+        )
+    </insert>
+
+    <update id="update">
+        UPDATE user_local_auth
+        <trim prefix="set" suffixOverrides=",">
+            <if test="uName != null and uName != ''">
+                uname = #{uName},
+            </if>
+            <if test="uPassword != null and uPassword != ''">
+                upassword = #{uPassword},
+            </if>
+        </trim>
+        WHERE uid = #{uid};
+    </update>
+
+    <select id="inquireUID" parameterType="STRING" resultType="INTEGER">
+        SELECT uid FROM user_local_auth
+        WHERE
+        uname = #{uname}
+        AND
+        upassword = #{upassword}
+    </select>
+</mapper>

@@ -51,4 +51,11 @@ public class ChannelProfileDaoTest extends AbstractTransactionalJUnit4SpringCont
         List<Integer> list = channelProfileDao.isChannelExists("silver", "skk");
         System.out.println("cID1="+list.isEmpty());
     }
+
+    @Test
+    public void inquireActiveChannelListTest() {
+        List<ChannelProfile> list = channelProfileDao.inquireAllChannelList(0, 1);
+        System.out.println("empty="+list.isEmpty());
+        System.out.println("cname="+list.get(0).getcName());
+    }
 }

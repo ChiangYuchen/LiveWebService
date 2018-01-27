@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.silver.lwb.dao.SubscriptionProfileDao">
+    <insert id="insert" parameterType="INTEGER">
+        INSERT INTO subscription_profile
+        (vid, pid)
+        VALUES
+        (
+        #{vid},
+        #{pid}
+        )
+    </insert>
+
+    <delete id="delete" parameterType="INTEGER">
+        DELETE FROM channel_profile
+        <where>
+            vid = #{vid}
+            AND
+            pid = #{pid}
+        </where>
+    </delete>
+
+    <select id="isPublisherSubscribed" parameterType="INTEGER" resultType="BOOLEAN">
+        SELECT COUNT(vid)
+        FROM subscription_profile
+        WHERE
+        vid = #{vid}
+        AND
+        pid = #{pid}
+    </select>
+</mapper>
